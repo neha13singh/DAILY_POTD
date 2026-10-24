@@ -64,4 +64,47 @@ public:
 
 
 //approach 2
+class Solution {
+public:
+    int countDaysTogether(string arriveAlice, string leaveAlice,
+                          string arriveBob, string leaveBob) {
 
+        vector<int> daysInMonth = {
+            31, 28, 31, 30, 31, 30,
+            31, 31, 30, 31, 30, 31
+        };
+
+        vector<int> cumsum(13, 0);
+
+        for (int i = 1; i < 13; i++) {
+            cumsum[i] = cumsum[i - 1] + daysInMonth[i - 1];
+            cout<<cumsum[i]<<" ";
+        }
+        cout<<endl;
+
+        int alicedate = stoi(arriveAlice.substr(3, 2));
+        int alicedate2 = stoi(leaveAlice.substr(3, 2));
+        int bobdate = stoi(arriveBob.substr(3, 2));
+        int bobdate2 = stoi(leaveBob.substr(3, 2));
+
+        int alicemonth = stoi(arriveAlice.substr(0, 2));
+        int alicemonth2 = stoi(leaveAlice.substr(0, 2));
+        int bobmonth = stoi(arriveBob.substr(0, 2));
+        int bobmonth2 = stoi(leaveBob.substr(0, 2));
+
+        int aliceday = cumsum[alicemonth - 1] + alicedate;
+        int aliceday2 = cumsum[alicemonth2 - 1] + alicedate2;
+
+        int bobday = cumsum[bobmonth - 1] + bobdate;
+        int bobday2 = cumsum[bobmonth2 - 1] + bobdate2;
+
+        int start = max(aliceday, bobday);
+        int end = min(aliceday2, bobday2);
+
+        if (start > end) {
+            return 0;
+        }
+
+        return end - start + 1;
+    }
+};
